@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A5982A0E-11AD-52BF-DA2E-F61E46024FF0}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Titan</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\Debug-windows-x86_64\Titan\</OutDir>
+    <IntDir>obj\Debug-windows-x86_64\Titan\</IntDir>
+    <TargetName>Titan</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\Release-windows-x86_64\Titan\</OutDir>
+    <IntDir>obj\Release-windows-x86_64\Titan\</IntDir>
+    <TargetName>Titan</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Titan/ttn_pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>26495;26812;26439;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>WINDOWS;FLORP_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;..\..\dependencies\spdlog\include;..\..\dependencies\GLM\include;..\..\dependencies\glad\include;..\..\dependencies\glfw3\include;..\..\dependencies\entt;..\..\dependencies\stbs;..\..\dependencies\imgui;..\toolkit\include;..\..\dependencies\fmod\include;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;..\..\dependencies\bullet3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\gzip\zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>(xcopy /Q /E /Y /I /C "$(ProjectDir)res" "$(SolutionDir)shared_assets\res")</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Titan/ttn_pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>26495;26812;26439;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>WINDOWS;FLORP_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;..\..\dependencies\spdlog\include;..\..\dependencies\GLM\include;..\..\dependencies\glad\include;..\..\dependencies\glfw3\include;..\..\dependencies\entt;..\..\dependencies\stbs;..\..\dependencies\imgui;..\toolkit\include;..\..\dependencies\fmod\include;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;..\..\dependencies\bullet3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\gzip\zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>(xcopy /Q /E /Y /I /C "$(ProjectDir)res" "$(SolutionDir)shared_assets\res")</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Titan\Application.h" />
+    <ClInclude Include="include\Titan\AssetSystem.h" />
+    <ClInclude Include="include\Titan\Camera.h" />
+    <ClInclude Include="include\Titan\Framebuffer.h" />
+    <ClInclude Include="include\Titan\IBuffer.h" />
+    <ClInclude Include="include\Titan\ITexture.h" />
+    <ClInclude Include="include\Titan\IndexBuffer.h" />
+    <ClInclude Include="include\Titan\Interpolation.h" />
+    <ClInclude Include="include\Titan\LUT.h" />
+    <ClInclude Include="include\Titan\Light.h" />
+    <ClInclude Include="include\Titan\MAnimation.h" />
+    <ClInclude Include="include\Titan\MAnimator.h" />
+    <ClInclude Include="include\Titan\Material.h" />
+    <ClInclude Include="include\Titan\Mesh.h" />
+    <ClInclude Include="include\Titan\ObjLoader.h" />
+    <ClInclude Include="include\Titan\Particle.h" />
+    <ClInclude Include="include\Titan\Physics.h" />
+    <ClInclude Include="include\Titan\PostEffect.h" />
+    <ClInclude Include="include\Titan\Random.h" />
+    <ClInclude Include="include\Titan\Renderer.h" />
+    <ClInclude Include="include\Titan\Renderer2D.h" />
+    <ClInclude Include="include\Titan\Scene.h" />
+    <ClInclude Include="include\Titan\Shader.h" />
+    <ClInclude Include="include\Titan\Sound.h" />
+    <ClInclude Include="include\Titan\Tag.h" />
+    <ClInclude Include="include\Titan\Texture2D.h" />
+    <ClInclude Include="include\Titan\TextureCubeMap.h" />
+    <ClInclude Include="include\Titan\TextureEnums.h" />
+    <ClInclude Include="include\Titan\Transform.h" />
+    <ClInclude Include="include\Titan\VertexArrayObject.h" />
+    <ClInclude Include="include\Titan\VertexBuffer.h" />
+    <ClInclude Include="include\Titan\ttn_pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\AssetSystem.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Framebuffer.cpp" />
+    <ClCompile Include="src\IBuffer.cpp" />
+    <ClCompile Include="src\ITexture.cpp" />
+    <ClCompile Include="src\LUT.cpp" />
+    <ClCompile Include="src\Light.cpp" />
+    <ClCompile Include="src\MAnimation.cpp" />
+    <ClCompile Include="src\MAnimator.cpp" />
+    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\ObjLoader.cpp" />
+    <ClCompile Include="src\Particle.cpp" />
+    <ClCompile Include="src\Physics.cpp" />
+    <ClCompile Include="src\PostEffect.cpp" />
+    <ClCompile Include="src\Random.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Renderer2D.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\Texture2D.cpp" />
+    <ClCompile Include="src\TextureCubeMap.cpp" />
+    <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\VertexArrayObject.cpp" />
+    <ClCompile Include="src\ttn_pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\glad\Glad.vcxproj">
+      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\glfw3\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\stbs\Stbs.vcxproj">
+      <Project>{818D8C7C-6DC4-8D0D-16B1-731002C7090F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\spdlog\spdlog.vcxproj">
+      <Project>{8EAD431C-7A4F-6EF2-630A-82464F4BF542}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\toolkit\toolkit.vcxproj">
+      <Project>{AB7025F0-1750-A48B-2068-2F628CC60AED}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\tinyGLTF\TinyGLTF.vcxproj">
+      <Project>{76563D9D-6223-98A8-8B3C-86507768CD36}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

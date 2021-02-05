@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Titan">
+      <UniqueIdentifier>{5880F6A3-C440-72DA-8D7B-BB57F9FAB6B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Titan\Application.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\AssetSystem.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Camera.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Framebuffer.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\IBuffer.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\ITexture.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\IndexBuffer.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Interpolation.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\LUT.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Light.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\MAnimation.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\MAnimator.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Material.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Mesh.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\ObjLoader.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Particle.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Physics.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\PostEffect.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Random.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Renderer.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Renderer2D.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Scene.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Shader.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Sound.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Tag.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Texture2D.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\TextureCubeMap.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\TextureEnums.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\Transform.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\VertexArrayObject.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\VertexBuffer.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Titan\ttn_pch.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AssetSystem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Framebuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ITexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LUT.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MAnimation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MAnimator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Material.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PostEffect.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Random.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureCubeMap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VertexArrayObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ttn_pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
