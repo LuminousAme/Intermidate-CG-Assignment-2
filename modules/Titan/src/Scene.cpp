@@ -31,6 +31,11 @@ namespace Titan {
 		m_physicsWorld->setGravity(btVector3(0.0f, 0.0f, 0.0f));
 
 		m_Paused = false;
+
+		//init the basic effect
+		glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
+		m_emptyEffect = TTN_PostEffect::Create();
+		m_emptyEffect->Init(windowSize.x, windowSize.y);
 	}
 
 	//construct with lightning data
@@ -55,6 +60,11 @@ namespace Titan {
 		m_physicsWorld->setGravity(btVector3(0.0f, 0.0f, 0.0f));
 
 		m_Paused = false;
+
+		//init the basic effect
+		glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
+		m_emptyEffect = TTN_PostEffect::Create();
+		m_emptyEffect->Init(windowSize.x, windowSize.y);
 	}
 
 	//destructor
@@ -253,11 +263,50 @@ namespace Titan {
 			Get<TTN_ParticeSystemComponent>(entity).GetParticleSystemPointer()->Render(Get<TTN_Transform>(entity).GetGlobalPos(),
 				viewMat, Get<TTN_Camera>(m_Cam).GetProj());
 		}
+
+		//unbind the empty effect and run through all the post effect
+		m_emptyEffect->UnbindBuffer();
+
+		//if there are post processing effects that can be applied
+		if (m_PostProcessingEffects.size() > 0) {
+			//track the index of the last effect that was applied
+			int index = -1;
+			//and iterate through all the post processing effects
+			for (int i = 0; i < m_PostProcessingEffects.size(); i++) {
+				//if the effect should be applied
+				if (m_PostProcessingEffects[i]->GetShouldApply()) {
+					//apply the effect 
+					if (index == -1)
+						m_PostProcessingEffects[i]->ApplyEffect(m_emptyEffect);
+					else
+						m_PostProcessingEffects[i]->ApplyEffect(m_PostProcessingEffects[index]);
+
+					//and save the index as this was most recent effect applied
+					index = i;
+				}
+			}
+			//at the end, draw to the screen
+			if (index == -1)
+				//if none should be applied, just draw the empty effect
+				m_emptyEffect->DrawToScreen();
+			else
+				//if they should be applied, draw from the last effect
+				m_PostProcessingEffects[index]->DrawToScreen();
+		}
+		//if there are no post processing effects to apply, just draw the empty effect
+		else {
+			m_emptyEffect->DrawToScreen();
+		}
 	}
 
 	//renders all the messes in our game
 	void TTN_Scene::Render()
 	{
+		//clear all the post processing effects
+		m_emptyEffect->Clear();
+		for (int i = 0; i < m_PostProcessingEffects.size(); i++)
+			m_PostProcessingEffects[i]->Clear();
+
 		//get the view and projection martix
 		glm::mat4 vp;
 		//update the camera for the scene
@@ -284,6 +333,9 @@ namespace Titan {
 		});
 
 		ReconstructScenegraph();
+
+		//bind the empty effect
+		m_emptyEffect->BindBuffer(0); //this gets unbound in postRender
 
 		//go through every entity with a transform and a mesh renderer and render the mesh
 		m_RenderGroup->each([&](entt::entity entity, TTN_Transform& transform, TTN_Renderer& renderer) {

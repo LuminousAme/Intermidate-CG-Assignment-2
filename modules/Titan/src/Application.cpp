@@ -81,6 +81,9 @@ namespace Titan {
 		
 		//Set the background colour for our scene to the base black
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+
+		//send the window to backend so other parts of titan can access the screensize
+		TTN_Backend::setWindow(m_window);
 	}
 
 	//function to check if the window is being closed
