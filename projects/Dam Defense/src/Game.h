@@ -58,6 +58,9 @@ public:
 	TTN_Shader::sshptr shaderProgramWater;
 	TTN_Shader::sshptr shaderProgramTerrain;
 
+	TTN_Shader::sshptr shaderColorCorrect;
+	//TTN_Shader::sshptr shaderProgramTerrain;
+
 	//meshes
 	TTN_Mesh::smptr cannonMesh;
 	TTN_Mesh::smptr boat1Mesh;

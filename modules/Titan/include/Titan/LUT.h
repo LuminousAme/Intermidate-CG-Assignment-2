@@ -9,31 +9,35 @@
 #include <glad/glad.h>
 #include "glm/common.hpp"
 
-class  TTN_LUT3D
-{
-public:
-	//defines a special easier to use name for shared(smart) pointers to the class 
-	typedef std::shared_ptr<TTN_LUT3D> st2dptr;
+namespace Titan {
 
-	//creates and returns a shared(smart) pointer to the class 
-	static inline st2dptr Create() {
-		return std::make_shared<TTN_LUT3D>();
-	}
+	class  TTN_LUT3D
+	{
+	public:
+		//defines a special easier to use name for shared(smart) pointers to the class 
+		typedef std::shared_ptr<TTN_LUT3D> st2dptr;
 
-	//Creates a new empty texture pointer, this is used by the framebuffer class 
-	static inline st2dptr CreateEmpty() {
-		return std::make_shared<TTN_LUT3D>();
-	}
+		//creates and returns a shared(smart) pointer to the class 
+		static inline st2dptr Create() {
+			return std::make_shared<TTN_LUT3D>();
+		}
 
-	 TTN_LUT3D();
-	 TTN_LUT3D(std::string path);
-	void loadFromFile(std::string path);
-	void bind();
-	void unbind();
+		//Creates a new empty texture pointer, this is used by the framebuffer class 
+		static inline st2dptr CreateEmpty() {
+			return std::make_shared<TTN_LUT3D>();
+		}
 
-	void bind(int textureSlot);
-	void unbind(int textureSlot);
-private:
-	GLuint _handle = GL_NONE;
-	std::vector<glm::vec3> data;
-};
+		TTN_LUT3D();
+		TTN_LUT3D(std::string path);
+		void loadFromFile(std::string path);
+		void bind();
+		void unbind();
+
+		void bind(int textureSlot);
+		void unbind(int textureSlot);
+	private:
+		GLuint _handle = GL_NONE;
+		std::vector<glm::vec3> data;
+	};
+
+}

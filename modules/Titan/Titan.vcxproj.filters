@@ -21,6 +21,9 @@
     <ClInclude Include="include\Titan\Camera.h">
       <Filter>include\Titan</Filter>
     </ClInclude>
+    <ClInclude Include="include\Titan\ColorCorrect.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
     <ClInclude Include="include\Titan\Framebuffer.h">
       <Filter>include\Titan</Filter>
     </ClInclude>
@@ -117,6 +120,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ColorCorrect.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Framebuffer.cpp">

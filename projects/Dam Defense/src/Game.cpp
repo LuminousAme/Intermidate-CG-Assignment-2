@@ -261,6 +261,8 @@ void Game::SetUpAssets()
 	TTN_LUT3D coldMap("Cool_LUT.cube");
 	TTN_LUT3D customMap("Custom_LUT.cube");
 
+	shaderColorCorrect = TTN_AssetSystem::GetShader("Color correct shader");
+
 	//// SHADERS ////
 #pragma region SHADERS
 	//grab the shaders
@@ -269,7 +271,6 @@ void Game::SetUpAssets()
 	shaderProgramTerrain = TTN_AssetSystem::GetShader("Terrain shader");
 	shaderProgramWater = TTN_AssetSystem::GetShader("Water shader");
 	shaderProgramAnimatedTextured = TTN_AssetSystem::GetShader("Animated textured shader");
-
 
 #pragma endregion
 
