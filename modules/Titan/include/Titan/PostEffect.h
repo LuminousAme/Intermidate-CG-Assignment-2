@@ -56,11 +56,19 @@ namespace Titan {
 		void BindShader(int index);
 		void UnbindShader();
 
+		//get if the effect should be applied 
+		bool GetShouldApply() { return m_shouldRender; }
+		//set if the effect should be applied
+		void SetShouldApply(bool shouldApply) { m_shouldRender = shouldApply; }
+
 	protected:
 		//holds all our buffers for the effects
 		std::vector <TTN_Framebuffer::sfboptr> m_buffers;
 
 		//holds all our shaders for the effects
 		std::vector <TTN_Shader::sshptr> m_shaders;
+
+		//bool for if the effect should be rendered
+		bool m_shouldRender = true;
 	};
 }
