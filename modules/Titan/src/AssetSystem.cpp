@@ -79,6 +79,17 @@ namespace Titan {
 		s_matMap[accessName] = TTN_Material::Create();
 	}
 
+	void TTN_AssetSystem::AddLUTTobeLoaded(std::string accessName, std::string fileName, int set)
+	{
+		//ensure the set is a atleast zero
+		if (set < 0)
+			LOG_ERROR("Asset Sets cannot be a number below 0");
+
+		s_LUTsToLoad[set].push_back(AccessAndFileName(accessName, fileName));
+
+		s_setsLoaded[set] = false;
+	}
+
 	//adds an existing texture2D pointer to the system
 	void TTN_AssetSystem::AddExisting2DTexture(std::string accessName, TTN_Texture2D::st2dptr texture) {
 		//add the texture to the unordered map, keyed with the access name
@@ -107,6 +118,12 @@ namespace Titan {
 	void TTN_AssetSystem::AddExistingMaterial(std::string accessName, TTN_Material::smatptr material) {
 		//adds the material to the unordered map, keyed with the access name
 		s_matMap[accessName] = material;
+	}
+
+	void TTN_AssetSystem::AddExistingLUT(std::string accessName, TTN_LUT3D::sltptr cube)
+	{
+		//adds the lut to the unordered map, keyed with the access name
+		s_LUTMap[accessName] = cube;
 	}
 
 	//gets a 2D texture pointer from the system
@@ -154,6 +171,16 @@ namespace Titan {
 		//if there is a material in that slot return it 
 		if (s_matMap.count(accessName))
 			return s_matMap[accessName];
+
+		//otherwise return a nullpointer
+		return nullptr;
+	}
+
+	TTN_LUT3D::sltptr TTN_AssetSystem::GetLUT(std::string accessName)
+	{
+		//if there is a lut in that slot return it 
+		if (s_LUTMap.count(accessName))
+			return s_LUTMap[accessName];
 
 		//otherwise return a nullpointer
 		return nullptr;
@@ -224,6 +251,15 @@ namespace Titan {
 				temp->Link();
 				//and store it in the unordered map
 				s_shaderMap[it.m_AccessName] = temp;
+			}
+		}
+
+		//confirm there are luts in the set
+		if (s_LUTsToLoad.size() > set) {
+			//iterate through all the luts in the set
+			for (auto it : s_LUTsToLoad[set]) {
+				//load the lut into the unordered map
+				s_LUTMap[it.m_AccessName] = TTN_LUT3D::Create(it.m_FileName);
 			}
 		}
 
@@ -391,7 +427,31 @@ namespace Titan {
 						//and store it in the unordered map
 						s_shaderMap[s_DefaultShadersToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_AccessName] = temp;
 					}
-					//if it is, then move onto non-default shaders
+					//if it is, then move onto luts
+					else {
+						s_CurrentAssetType = 6;
+						s_CurrentAssetIndex = -1;
+					}
+				}
+				//if there aren't, move onto luts
+				else {
+					s_CurrentAssetType = 6;
+					s_CurrentAssetIndex = -1;
+				}
+			}
+
+			//if we're currently loading luts
+			else if (s_CurrentAssetType == 6) {
+				//first confirm there are luts in the set
+				if (s_LUTsToLoad.size() > s_loadQueue[0]) {
+					//check the index is not out of bounds
+					if (s_CurrentAssetIndex < s_LUTsToLoad[s_loadQueue[0]].size()) {
+						//load the asset into the map
+						//load the asset
+						s_LUTMap[s_LUTsToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_AccessName] =
+							TTN_LUT3D::Create(s_2DTexturesToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_FileName);
+					}
+					//if it is then we are done loading this set
 					else {
 						s_CurrentAssetType = 0;
 						s_CurrentAssetIndex = -1;
@@ -399,7 +459,7 @@ namespace Titan {
 						s_setsLoaded[s_loadQueue[0]] = true;
 					}
 				}
-				//if there aren't, move onto non-default shaders
+				//if there aren't, then we're done loading this set
 				else {
 					s_CurrentAssetType = 0;
 					s_CurrentAssetIndex = -1;
