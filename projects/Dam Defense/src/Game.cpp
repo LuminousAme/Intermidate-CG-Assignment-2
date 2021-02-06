@@ -46,7 +46,7 @@ void Game::Update(float deltaTime)
 		//goes through the boats vector
 		for (int i = 0; i < boats.size(); i++) {
 			//sets gravity to 0
-			Get<TTN_Physics>(boats[i]).GetRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f)); 
+			Get<TTN_Physics>(boats[i]).GetRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
 		}
 
 		//go through all the entities with enemy compontents
@@ -201,6 +201,30 @@ void Game::KeyDownChecks()
 //function to cehck for when a key is being pressed
 void Game::KeyChecks()
 {
+	auto& a = Get<TTN_Transform>(camera);
+	/// CAMERA MOVEMENT FOR A2 ///
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::W)) {
+		a.SetPos(glm::vec3(a.GetPos().x, a.GetPos().y, a.GetPos().z + 2.0f));
+	}
+
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::S)) {
+		a.SetPos(glm::vec3(a.GetPos().x, a.GetPos().y, a.GetPos().z - 2.0f));
+	}
+
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::A)) {
+		a.SetPos(glm::vec3(a.GetPos().x + 2.0f, a.GetPos().y, a.GetPos().z));
+	}
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::D)) {
+		a.SetPos(glm::vec3(a.GetPos().x - 2.0f, a.GetPos().y, a.GetPos().z));
+	}
+
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::LeftControl)) {
+		a.SetPos(glm::vec3(a.GetPos().x - 2.0f, a.GetPos().y - 2.0f, a.GetPos().z));
+	}
+	if (TTN_Application::TTN_Input::GetKey(TTN_KeyCode::Space)) {
+		a.SetPos(glm::vec3(a.GetPos().x - 2.0f, a.GetPos().y + 2.0f, a.GetPos().z));
+	}
+
 }
 
 //function to check for when a key has been released
@@ -675,7 +699,7 @@ void Game::RestartData()
 	FlameAnim = 0.0f;
 	Dam_health = Dam_MaxHealth;
 
-	//bird data setup 
+	//bird data setup
 	birdTimer = 0.0f;
 
 	//scene data steup
@@ -808,16 +832,16 @@ void Game::CreateExpolsion(glm::vec3 location)
 	//attach the particle system component to the entity
 	AttachCopy(newExpolsion, psComponent);
 
-	//get a reference to that particle system and burst it 
+	//get a reference to that particle system and burst it
 	Get<TTN_ParticeSystemComponent>(newExpolsion).GetParticleSystemPointer()->Burst(500);
 }
 
 //creates the flames for the flamethrower
 void Game::Flamethrower() {
 	//if the cooldown has ended
-	if (FlameTimer <= 0.0f) { 
+	if (FlameTimer <= 0.0f) {
 		//reset cooldown
-		FlameTimer = FlameThrowerCoolDown; 
+		FlameTimer = FlameThrowerCoolDown;
 		//set the active flag to true
 		Flaming = true;
 		//and through and create the fire particle systems
@@ -844,7 +868,7 @@ void Game::Flamethrower() {
 		}
 	}
 	//otherwise nothing happens
-	else { 
+	else {
 		Flaming = false;
 	}
 }
@@ -912,19 +936,19 @@ void Game::SpawnBoatLeft()
 	//create a transform for the boat
 	TTN_Transform boatTrans = TTN_Transform(glm::vec3(21.0f, 10.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//set up the transform for the green boat
-	if (randomBoat == 0) { 
+	if (randomBoat == 0) {
 		boatTrans.RotateFixed(glm::vec3(0.0f, 180.0f, 0.0f));
 		boatTrans.SetScale(glm::vec3(0.25f, 0.25f, 0.25f));
 		boatTrans.SetPos(glm::vec3(90.0f, -8.5f, 115.0f));
 	}
 	//setup transform for the red boat
-	else if (randomBoat == 1) { 
+	else if (randomBoat == 1) {
 		boatTrans.RotateFixed(glm::vec3(0.0f, -90.0f, 0.0f));
 		boatTrans.SetScale(glm::vec3(0.05f, 0.05f, 0.05f));
 		boatTrans.SetPos(glm::vec3(90.0f, -8.0f, 115.0f));
 	}
 	//set up transform for the yellow boat
-	else if (randomBoat == 2) { 
+	else if (randomBoat == 2) {
 		boatTrans.RotateFixed(glm::vec3(0.0f, 90.0f, 0.0f));
 		boatTrans.SetScale(glm::vec3(0.15f, 0.15f, 0.15f));
 		boatTrans.SetPos(glm::vec3(90.0f, -7.5f, 115.0f));
@@ -936,14 +960,14 @@ void Game::SpawnBoatLeft()
 	TTN_Physics pbody = TTN_Physics(boatTrans.GetPos(), glm::vec3(0.0f), glm::vec3(2.0f, 4.0f, 8.95f), boats[boats.size() - 1], TTN_PhysicsBodyType::DYNAMIC);
 	pbody.SetLinearVelocity(glm::vec3(-25.0f, 0.0f, 0.0f));//-2.0f
 	AttachCopy<TTN_Physics>(boats[boats.size() - 1], pbody);
-	
+
 	//creates and attaches a tag to the boat
-	TTN_Tag boatTag = TTN_Tag("Boat"); 
+	TTN_Tag boatTag = TTN_Tag("Boat");
 	AttachCopy<TTN_Tag>(boats[boats.size() - 1], boatTag);
 
 	//create and attach the enemy component to the boat
 	int randPath = rand() % 3; // generates path number between 0-2 (left side paths, right side path nums are 3-5)
-	EnemyComponent en = EnemyComponent(boats[boats.size()-1], this, randomBoat, randPath, 0.0f);
+	EnemyComponent en = EnemyComponent(boats[boats.size() - 1], this, randomBoat, randPath, 0.0f);
 	AttachCopy(boats[boats.size() - 1], en);
 }
 
@@ -981,7 +1005,7 @@ void Game::SpawnBoatRight()
 		boatTrans.SetPos(glm::vec3(-90.0f, -8.5f, 115.0f));
 	}
 	//set up the transform for the red boat
-	else if (randomBoat == 1) { 
+	else if (randomBoat == 1) {
 		boatTrans.RotateFixed(glm::vec3(0.0f, 90.0f, 0.0f));
 		boatTrans.SetScale(glm::vec3(0.05f, 0.05f, 0.05f));
 		boatTrans.SetPos(glm::vec3(-90.0f, -8.0f, 115.0f));
@@ -1021,7 +1045,7 @@ void Game::WaveUpdate(float deltaTime)
 		m_boatsStillNeedingToSpawnThisWave = m_boatsRemainingThisWave;
 		m_timeUntilNextSpawn = m_timeBetweenEnemySpawns;
 	}
-	
+
 	//if it is in the cooldown between waves, reduce the cooldown by deltaTime
 	if (m_timeTilNextWave >= 0.0f) {
 		m_timeTilNextWave -= deltaTime;
@@ -1069,9 +1093,6 @@ void Game::Collisions()
 				//if one is a boat and the other is a cannonball
 				if (cont && ((Get<TTN_Tag>(entity1Ptr).getLabel() == "Boat" && Get<TTN_Tag>(entity2Ptr).getLabel() == "Ball") ||
 					(Get<TTN_Tag>(entity1Ptr).getLabel() == "Ball" && Get<TTN_Tag>(entity2Ptr).getLabel() == "Boat"))) {
-
-
-
 					//then iterate through the list of cannonballs until you find the one that's collided
 					std::vector<entt::entity>::iterator it = cannonBalls.begin();
 					while (it != cannonBalls.end()) {
@@ -1119,7 +1140,7 @@ void Game::Damage(float deltaTime) {
 	//iterator through all the boats
 	std::vector<entt::entity>::iterator it = boats.begin();
 	while (it != boats.end()) {
-		//check if the boat is close enough to the dam to damage it 
+		//check if the boat is close enough to the dam to damage it
 		if (Get<TTN_Transform>(*it).GetPos().z <= EnemyComponent::GetZTarget() + 2.0f * EnemyComponent::GetZTargetDistance()) {
 			//if they are check if they're through the cooldown
 			if (Get<EnemyComponent>(*it).GetCooldown() <= 0.f) {
@@ -1177,5 +1198,20 @@ void Game::ImGui()
 	if (ImGui::SliderFloat("Camera Test Y-Axis", &c, -100.0f, 100.0f)) {
 		a.SetPos(glm::vec3(a.GetPos().x, c, a.GetPos().z));
 	}
+
+	if (ImGui::CollapsingHeader("Effect Controls")) {
+		/*	TTN_ColorCorrect* temp =
+			float intensity
+				if (ImGui::SliderFloat("Intenisty", &intensity, 0.0f, 1.0f)) {
+					temp->SetIntensity(intensity);
+				}
+
+				ImGui::Text("Active Effect: Greyscale Effect");
+				GreyscaleEffect* temp = (GreyscaleEffect*)effects[activeEffect];
+				float intensity = temp->GetIntensity();
+
+			*/
+	}
+
 	ImGui::End();
 }

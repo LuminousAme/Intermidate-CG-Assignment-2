@@ -59,5 +59,13 @@ namespace Titan {
 		//texture for displacement mapping
 		TTN_Texture2D::st2dptr m_HeightMap;
 		float m_HeightInfluence;
+
+		//bools for switching between modes
+		bool m_NoLight;
+		bool m_Ambient;
+		bool m_Specular;
+		bool m_AmbientSpecular;
+		bool m_AmbientSpecularCustom;
+
 	};
 }

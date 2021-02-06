@@ -8,6 +8,7 @@
 #include "Titan/Interpolation.h"
 #include "Titan/Sound.h"
 #include "Titan/LUT.h"
+#include "Titan/ColorCorrect.h"
 #include "Titan/PostEffect.h"
 #include "EnemyComponent.h"
 
