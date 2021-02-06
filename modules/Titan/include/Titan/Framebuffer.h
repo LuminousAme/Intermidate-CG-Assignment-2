@@ -36,6 +36,16 @@ namespace Titan {
 	//framebuffer class
 	class TTN_Framebuffer {
 	public:
+		//defines a special easier to use name for shared(smart) pointers to the class 
+		typedef std::shared_ptr<TTN_Framebuffer> sfboptr;
+
+		//creates and returns a shared(smart) pointer to the class 
+		static inline sfboptr Create() {
+			return std::make_shared<TTN_Framebuffer>();
+		}
+
+	public:
+		//default constructors and destructors
 		TTN_Framebuffer();
 		~TTN_Framebuffer();
 

@@ -1,40 +1,43 @@
+//Titan Engine by Atlas X Games
+//ColorCorrect.h - Header for the class for color correction post processing effects
 #pragma once
 
 //include the precompile header with a bunch of system
 #include "ttn_pch.h"
 #include "PostEffect.h"
+#include "LUT.h"
 
 namespace Titan {
-
+	//class for color correction post processing effects
 	class TTN_ColorCorrect : public TTN_PostEffect
 	{
 	public:
-		//init framebuffer, overrirdes post effect Init
+		//defines a special easier to use name for shared(smart) pointers to the class 
+		typedef std::shared_ptr<TTN_ColorCorrect> scolcorptr;
+
+		//creates and returns a shared(smart) pointer to the class 
+		static inline scolcorptr Create() {
+			return std::make_shared<TTN_ColorCorrect>();
+		}
+
+	public:
+		//Init framebuffer
 		void Init(unsigned width, unsigned height) override;
 
-		//applies effect to buffer, passes previous framebuffer with the texture to apply as parameter
-		void ApplyEffect(TTN_PostEffect* buffer) override;
-		
-		void DrawToScreen() override;
-	
-		//getters
-		float GetIntensity() const;
+		//Applies effect to this buffer
+		//passes the previous framebuffer with the texture to apply as a parameter
+		void ApplyEffect(TTN_PostEffect::spostptr buffer) override;
 
-		//setters
-		void SetIntensity(float intensity);
-
-
+		//Getters
+		float GetIntensity() const { return m_intensity; }
+		TTN_LUT3D::sltptr GetCube() const { return m_cube; }
+		//Setters
+		void SetIntensity(float intensity) { m_intensity = intensity; }
+		void SetCube(TTN_LUT3D::sltptr cube) { m_cube = cube; }
 	private:
-		float _intensity = 1.0f;
-
-
-
-
-
-
-
-
+		//intensity of the effect
+		float m_intensity = 1.0f;
+		//cube look up table
+		TTN_LUT3D::sltptr m_cube;
 	};
-
-
 }

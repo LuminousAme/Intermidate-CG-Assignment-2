@@ -1,65 +1,52 @@
+//Titan Engine by Atlas X Games
+//ColorCorrect.cpp - Source file for the class for color correction post processing effects
+
+//include precompiled header
 #include "Titan/ttn_pch.h"
+
+//include the class
 #include "Titan/ColorCorrect.h"
 
 namespace Titan {
-
+	//initliazes the color correction effect
 	void TTN_ColorCorrect::Init(unsigned width, unsigned height)
 	{
+		//Set up framebuffers
+		//creates a new framebuffer with a basic color and depth target
+		int index = (int)m_buffers.size();
+		m_buffers.push_back(TTN_Framebuffer::Create());
+		m_buffers[index]->AddColorTarget(GL_RGBA8);
+		m_buffers[index]->AddDepthTarget();
+		//initliaze the framebuffer
+		m_buffers[index]->Init(width, height);
 
-		if (!_shaders.size() > 0)
-		{
-			//set up framebuffers
-			int index = int(_buffers.size());
-			_buffers.push_back(new TTN_Framebuffer());
-			_buffers[index]->AddColorTarget(GL_RGBA8);
-			_buffers[index]->AddDepthTarget();
-			_buffers[index]->Init(width, height);
-		}
+		index = (int)m_shaders.size();
+		//set up color correction shader
+		m_shaders.push_back(TTN_Shader::Create());
+		//load in the shader
+		m_shaders[index]->LoadShaderStageFromFile("shaders/Post/ttn_passthrough_vert.glsl", GL_VERTEX_SHADER);
+		m_shaders[index]->LoadShaderStageFromFile("shaders/Post/ttn_color_correction_frag.glsl", GL_FRAGMENT_SHADER);
+		m_shaders[index]->Link();
 
-		_shaders.push_back(TTN_Shader::Create());
-		_shaders[_shaders.size() - 1]->LoadShaderStageFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-		_shaders[_shaders.size() - 1]->LoadShaderStageFromFile("shaders/color_correction_frag.glsl", GL_FRAGMENT_SHADER);
-		_shaders[_shaders.size() - 1]->Link();
-
-		//Call base class Init
+		//init the original 
 		TTN_PostEffect::Init(width, height);
-
 	}
 
-	void TTN_ColorCorrect::ApplyEffect(TTN_PostEffect* buffer)
+	//applies the effect to the full screen quad
+	void TTN_ColorCorrect::ApplyEffect(TTN_PostEffect::spostptr buffer)
 	{
-		BindShader(_shaders.size() - 1);
-
+		//binds the shader (size() - 2 because we're loading the pass through as the last shader, and thus this is the second last shader)
+		BindShader(m_shaders.size() - 2);
+		m_shaders[m_shaders.size() - 2]->SetUniform("u_Intensity", m_intensity);
+		//binds the color 
 		buffer->BindColorAsTexture(0, 0, 0);
-
-		_buffers[0]->RenderToFSQ();
-
+		//binds the cube 
+		m_cube->bind(30);
+		//renders to the full screen quad
+		m_buffers[0]->RenderToFSQ();
+		//unbinds everything
+		m_cube->unbind(30);
 		buffer->UnbindTexture(0);
-
 		UnbindShader();
 	}
-
-	void TTN_ColorCorrect::DrawToScreen()
-	{
-		BindShader(_shaders.size() - 1);
-
-		BindColorAsTexture(0, 0, 0);
-		_buffers[0]->DrawFullScreenQuad();
-		UnbindTexture(0);
-
-		UnbindShader();
-	}
-
-
-	float TTN_ColorCorrect::GetIntensity() const
-	{
-		return _intensity;
-	}
-
-	void TTN_ColorCorrect::SetIntensity(float intensity)
-	{
-		_intensity = intensity;
-	}
-
 }
-
