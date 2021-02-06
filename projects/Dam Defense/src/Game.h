@@ -7,6 +7,8 @@
 #include "Titan/ObjLoader.h"
 #include "Titan/Interpolation.h"
 #include "Titan/Sound.h"
+#include "Titan/LUT.h"
+#include "Titan/PostEffect.h"
 #include "EnemyComponent.h"
 
 using namespace Titan;
