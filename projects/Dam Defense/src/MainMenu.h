@@ -98,6 +98,17 @@ protected:
 	void SetUpAssets();
 	void SetUpEntities();
 	void SetUpOtherData();
+
+	//CG assingment 2 stuff
+protected:
+	//color correction effect
+	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
+	//bools for imgui controls
+	bool m_applyWarmLut;
+	bool m_applyCoolLut;
+	bool m_applyCustomLut;
+
+	void ImGui();
 };
 
 class MainMenuUI : public TTN_Scene {

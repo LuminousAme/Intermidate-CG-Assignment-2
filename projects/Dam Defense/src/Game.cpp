@@ -281,12 +281,6 @@ void Game::SetUpAssets()
 	TTN_AudioEvent& music = engine.CreateEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
 	music.Play();
 
-	warmMap = TTN_AssetSystem::GetLUT("Warm LUT");
-	coldMap = TTN_AssetSystem::GetLUT("Cool LUT");
-	customMap = TTN_AssetSystem::GetLUT("Custom LUT");
-	
-	shaderColorCorrect = TTN_AssetSystem::GetShader("Color correct shader");
-
 	//// SHADERS ////
 #pragma region SHADERS
 	//grab the shaders
@@ -676,11 +670,20 @@ void Game::SetUpOtherData()
 		expolsionParticle.SetOneStartSpeed(4.5f);
 	}
 
+	//setup up the color correction effect
 	glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
 	m_colorCorrectEffect = TTN_ColorCorrect::Create();
 	m_colorCorrectEffect->Init(windowSize.x, windowSize.y);
+	//set it so it doesn't render
+	m_colorCorrectEffect->SetShouldApply(false);
+	m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Warm LUT"));
+	//and add it to this scene's list of effects
 	m_PostProcessingEffects.push_back(m_colorCorrectEffect);
 
+	//set all 3 effects to false
+	m_applyWarmLut = false;
+	m_applyCoolLut = false;
+	m_applyCustomLut = false;
 }
 
 //restarts the game
@@ -1206,17 +1209,62 @@ void Game::ImGui()
 	}
 
 	if (ImGui::CollapsingHeader("Effect Controls")) {
-		/*	TTN_ColorCorrect* temp =
-			float intensity
-				if (ImGui::SliderFloat("Intenisty", &intensity, 0.0f, 1.0f)) {
-					temp->SetIntensity(intensity);
-				}
+		//Lut controls
 
-				ImGui::Text("Active Effect: Greyscale Effect");
-				GreyscaleEffect* temp = (GreyscaleEffect*)effects[activeEffect];
-				float intensity = temp->GetIntensity();
+		//toogles the warm color correction effect on or off
+		if (ImGui::Checkbox("Warm Color Correction", &m_applyWarmLut)) {
+			switch (m_applyWarmLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Warm LUT"));
+				//and make sure the cool and customs luts are set not to render
+				m_applyCoolLut = false;
+				m_applyCustomLut = false;
+				break;
+			case false:
+				//if it's been turned of set the effect not to render
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
 
-			*/
+		//toogles the cool color correction effect on or off
+		if (ImGui::Checkbox("Cool Color Correction", &m_applyCoolLut)) {
+			switch (m_applyCoolLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Cool LUT"));
+				//and make sure the warm and customs luts are set not to render
+				m_applyWarmLut = false;
+				m_applyCustomLut = false;
+				break;
+			case false:
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
+
+		//toogles the custom color correction effect on or off
+		if (ImGui::Checkbox("Custom Color Correction", &m_applyCustomLut)) {
+			switch (m_applyCustomLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Custom LUT"));
+				//and make sure the warm and cool luts are set not to render
+				m_applyWarmLut = false;
+				m_applyCoolLut = false;
+				break;
+			case false:
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
 	}
 
 	ImGui::End();

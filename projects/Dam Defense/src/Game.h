@@ -59,9 +59,6 @@ public:
 	TTN_Shader::sshptr shaderProgramWater;
 	TTN_Shader::sshptr shaderProgramTerrain;
 
-	TTN_Shader::sshptr shaderColorCorrect;
-	//TTN_Shader::sshptr shaderProgramTerrain;
-
 	//meshes
 	TTN_Mesh::smptr cannonMesh;
 	TTN_Mesh::smptr boat1Mesh;
@@ -113,11 +110,6 @@ public:
 
 	TTN_AudioEngine& engine = TTN_AudioEngine::Instance();
 
-	TTN_LUT3D::sltptr warmMap;
-	TTN_LUT3D::sltptr coldMap;
-	TTN_LUT3D::sltptr customMap;
-
-	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
 	//Entities
 protected:
 	entt::entity camera;
@@ -198,6 +190,15 @@ protected:
 	TTN_ParticleTemplate smokeParticle;//smoke burst particles
 	TTN_ParticleTemplate fireParticle;//fire particles
 	TTN_ParticleTemplate expolsionParticle;//expolsion particles
+
+//CG assingment 2 stuff
+protected:
+	//color correction effect
+	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
+	//bools for imgui controls
+	bool m_applyWarmLut;
+	bool m_applyCoolLut;
+	bool m_applyCustomLut;
 
 	//set up functions, called by InitScene()
 protected:
