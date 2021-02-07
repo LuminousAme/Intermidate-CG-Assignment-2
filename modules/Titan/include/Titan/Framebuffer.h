@@ -127,13 +127,13 @@ namespace Titan {
 		bool m_depthActive = false;
 
 		//Full screen quad VBO handle
-		static GLuint m_fullscreenQuadVBO;
+		inline static GLuint m_fullscreenQuadVBO = 0;
 		//Full screen VAO handle
-		static GLuint m_fullscreenQuadVAO;
+		inline static GLuint m_fullscreenQuadVAO = 0;
 
 		//the maximum amount of color attachments
 		static int m_maxColorAttachments;
 		//is the fullscreen quad initliazed
-		static bool m_isInitFSQ;
+		inline static bool m_isInitFSQ = false;
 	};
 }

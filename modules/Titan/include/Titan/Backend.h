@@ -21,6 +21,6 @@ namespace Titan {
 
 	private:
 		//pointer to the window
-		static GLFWwindow* m_window;
+		inline static GLFWwindow* m_window = nullptr;
 	};
 }
