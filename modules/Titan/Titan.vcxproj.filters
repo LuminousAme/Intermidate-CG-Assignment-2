@@ -122,6 +122,9 @@
     <ClCompile Include="src\AssetSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Backend.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>src</Filter>
     </ClCompile>

@@ -111,7 +111,7 @@ namespace Titan {
 		void SetShouldRender(bool _shouldRender);
 		//sets the ambient color of the lighting in the scene
 		void SetSceneAmbientColor(glm::vec3 color);
-		//sets the strenght of the abmient lighting in the scene
+		//sets the strenght of the ambient lighting in the scene
 		void SetSceneAmbientLightStrength(float str);
 
 		//gets wheter or not the scene should be rendered 
@@ -186,6 +186,8 @@ namespace Titan {
 
 		//empty post processing effect that just draws to a framebuffer
 		TTN_PostEffect::spostptr m_emptyEffect;
+		//color correct effect
+		TTN_PostEffect::spostptr m_colorCorrectEffect;
 
 		//constructs the TTN_Collision objects
 		void ConstructCollisions();

@@ -8,6 +8,7 @@
 #include "Titan/Interpolation.h"
 #include "Titan/Sound.h"
 #include "Titan/LUT.h"
+#include "Titan/ColorCorrect.h"
 #include "Titan/PostEffect.h"
 #include "EnemyComponent.h"
 
@@ -111,6 +112,10 @@ public:
 #pragma endregion
 
 	TTN_AudioEngine& engine = TTN_AudioEngine::Instance();
+
+	TTN_LUT3D::sltptr warmMap;
+	TTN_LUT3D::sltptr coldMap;
+	TTN_LUT3D::sltptr customMap;
 
 	//Entities
 protected:
