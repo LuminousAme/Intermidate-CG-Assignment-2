@@ -15,6 +15,13 @@ uniform float u_Shininess;
 uniform vec3  u_AmbientCol;
 uniform float u_AmbientStrength;
 
+//bools for different lighting effects
+uniform bool u_Option1;
+uniform bool u_Option2;
+uniform bool u_Option3;
+uniform bool u_Option4;
+uniform bool u_Option5;
+
 //Specfic light stuff
 uniform vec3  u_LightPos[16];
 uniform vec3  u_LightCol[16];
@@ -33,7 +40,7 @@ uniform vec3  u_CamPos;
 out vec4 frag_color;
 
 //functions 
-vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec);
+vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec, bool u_Option1, bool u_Option2, bool u_Option3, bool u_Option4, bool u_Option5);
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
 void main() {
@@ -64,7 +71,7 @@ void main() {
 	frag_color = vec4(result, textureColor.a);
 }
 
-vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec) {
+vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec, bool u_Option1, bool u_Option2, bool u_Option3, bool u_Option4, bool u_Option5) {
 	//ambient 
 	vec3 ambient = ambStr * col;
 
@@ -85,6 +92,29 @@ vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst
 	float spec = pow(max(dot(norm, halfWay), 0.0), u_Shininess); 
 	vec3 specular = specStr * textSpec * spec * col;
 	
-	//combine and return it all
+	//no light
+	if(u_Option1 == true){
+		return vec3(0.0);
+	}
+	//ambient
+	else if (u_Option2 == true){
+		return ambient;
+	}
+	//specular
+	else if (u_Option3 == true){
+		return specular;
+	}
+	//ambient + specular
+	else if (u_Option4 == true){
+		return (ambient + specular);
+	}
+		//custom + ambient specular
+	else if (u_Option5 == true){
+		return (ambient + specular + diffuse);
+	}
+
+	else {
+	//otherwise combine and return the regualr/original effect
 	return ((ambient + diffuse + specular) * attenuation);
+	}
 }
