@@ -449,7 +449,7 @@ namespace Titan {
 						//load the asset into the map
 						//load the asset
 						s_LUTMap[s_LUTsToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_AccessName] =
-							TTN_LUT3D::Create(s_2DTexturesToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_FileName);
+							TTN_LUT3D::Create(s_LUTsToLoad[s_loadQueue[0]][s_CurrentAssetIndex].m_FileName);
 					}
 					//if it is then we are done loading this set
 					else {

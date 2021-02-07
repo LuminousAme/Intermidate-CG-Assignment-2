@@ -175,7 +175,7 @@ namespace Titan {
 		//now all the scenes that should be rendered (current gameplay scene, ui, etc.) will be rendered
 		//while anything that doesn't need to be rendered (such as a prefabs scene) will not 
 		
-		//end Imgui
+		//end Imgui, rendering it
 		EndImgui();
 
 		//set the last effect to nullpointer so it's set up correctly for the next frame
