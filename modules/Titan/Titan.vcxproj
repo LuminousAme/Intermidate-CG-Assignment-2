@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClInclude Include="include\Titan\Application.h" />
     <ClInclude Include="include\Titan\AssetSystem.h" />
+    <ClInclude Include="include\Titan\Backend.h" />
     <ClInclude Include="include\Titan\Camera.h" />
     <ClInclude Include="include\Titan\ColorCorrect.h" />
     <ClInclude Include="include\Titan\Framebuffer.h" />

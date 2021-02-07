@@ -111,6 +111,7 @@
     <ClInclude Include="include\Titan\ttn_pch.h">
       <Filter>include\Titan</Filter>
     </ClInclude>
+    <ClInclude Include="include\Titan\Backend.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">

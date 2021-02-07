@@ -80,7 +80,7 @@ namespace Titan {
 		TTN_Renderer2D::InitRenderer2D();
 		
 		//Set the background colour for our scene to the base black
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
 		//send the window to backend so other parts of titan can access the screensize
 		TTN_Backend::setWindow(m_window);
