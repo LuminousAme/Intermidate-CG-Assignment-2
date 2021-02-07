@@ -16,7 +16,7 @@ void main()
 	//just sample the texture
 	vec4 source = texture(s_screenTex, inUV);
 
-	float alhpa = (source.a == 0.0) ? 0.0 : 1.0; 
+	float alhpa = (ceil(source.a));
 
 	//and apply it to the full screen quad
 	frag_color = vec4(source.rgb, alhpa);
