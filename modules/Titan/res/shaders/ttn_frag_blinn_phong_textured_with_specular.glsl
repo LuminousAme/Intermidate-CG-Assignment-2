@@ -61,7 +61,7 @@ void main() {
 	for(int i = 0; i < u_NumOfLights; i++) {
 		result = result + CalcLight(u_LightPos[i], u_LightCol[i], u_AmbientLightStrength[i], u_SpecularLightStrength[i], 
 					u_LightAttenuationConstant[i], u_LightAttenuationLinear[i], u_LightAttenuationQuadratic[i], 
-					N, viewDir, texSpec);
+					N, viewDir, texSpec,  u_Option1,  u_Option2,  u_Option3,  u_Option4,  u_Option5);
 	}
 
 	//add that to the texture color
