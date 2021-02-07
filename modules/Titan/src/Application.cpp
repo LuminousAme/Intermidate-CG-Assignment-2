@@ -49,6 +49,9 @@ namespace Titan {
 		//set the window we want to draw on to the window that was just created
 		glfwMakeContextCurrent(m_window);
 
+		//send the window to backend so other parts of titan can access the screensize
+		TTN_Backend::setWindow(m_window);
+
 		//initliaze glad and check it initliazed properly 
 		if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0) {
 			//if it did not init properly print that to the console and throw a runtime error
@@ -82,8 +85,7 @@ namespace Titan {
 		//Set the background colour for our scene to the base black
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
-		//send the window to backend so other parts of titan can access the screensize
-		TTN_Backend::setWindow(m_window);
+		
 	}
 
 	//function to check if the window is being closed

@@ -66,4 +66,56 @@ namespace Titan {
 	{
 		m_HeightInfluence = influence;
 	}
+
+	//// Setters for shader bools ////
+	void TTN_Material::SetNoLight(bool noLight)
+	{
+		m_NoLight = noLight;
+		if (m_NoLight == true) {
+			m_Ambient = false;
+			m_AmbientSpecular = false;
+			m_AmbientSpecularCustom = false;
+			m_Specular = false;
+		}
+	}
+	void TTN_Material::SetAmbient(bool ambient)
+	{
+		m_Ambient = ambient;
+		if (m_Ambient == true) {
+			m_NoLight = false;
+			m_AmbientSpecular = false;
+			m_AmbientSpecularCustom = false;
+			m_Specular = false;
+		}
+	}
+	void TTN_Material::SetSpecular(bool specular)
+	{
+		m_Specular = specular;
+		if (m_Specular == true) {
+			m_Ambient = false;
+			m_AmbientSpecular = false;
+			m_AmbientSpecularCustom = false;
+			m_NoLight = false;
+		}
+	}
+	void TTN_Material::SetAmbientSpecular(bool ambientSpecular)
+	{
+		m_AmbientSpecular = ambientSpecular;
+		if (m_NoLight == true) {
+			m_Ambient = false;
+			m_AmbientSpecular = false;
+			m_AmbientSpecularCustom = false;
+			m_Specular = false;
+		}
+	}
+	void TTN_Material::SetCustom(bool custom)
+	{
+		m_AmbientSpecularCustom = custom;
+		if (m_NoLight == true) {
+			m_Ambient = false;
+			m_AmbientSpecular = false;
+			m_AmbientSpecularCustom = false;
+			m_Specular = false;
+		}
+	}
 }

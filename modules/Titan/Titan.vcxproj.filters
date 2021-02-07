@@ -18,6 +18,9 @@
     <ClInclude Include="include\Titan\AssetSystem.h">
       <Filter>include\Titan</Filter>
     </ClInclude>
+    <ClInclude Include="include\Titan\Backend.h">
+      <Filter>include\Titan</Filter>
+    </ClInclude>
     <ClInclude Include="include\Titan\Camera.h">
       <Filter>include\Titan</Filter>
     </ClInclude>
@@ -117,6 +120,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\AssetSystem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">

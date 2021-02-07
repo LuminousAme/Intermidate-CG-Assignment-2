@@ -281,9 +281,9 @@ void Game::SetUpAssets()
 	TTN_AudioEvent& music = engine.CreateEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
 	music.Play();
 
-	TTN_LUT3D warmMap("Warm_LUT.cube");
-	TTN_LUT3D coldMap("Cool_LUT.cube");
-	TTN_LUT3D customMap("Custom_LUT.cube");
+	warmMap = TTN_AssetSystem::GetLUT("Warm LUT");
+	coldMap = TTN_AssetSystem::GetLUT("Cool LUT");
+	customMap = TTN_AssetSystem::GetLUT("Custom LUT");
 
 	shaderColorCorrect = TTN_AssetSystem::GetShader("Color correct shader");
 

@@ -186,6 +186,8 @@ namespace Titan {
 
 		//empty post processing effect that just draws to a framebuffer
 		TTN_PostEffect::spostptr m_emptyEffect;
+		//color correct effect
+		TTN_PostEffect::spostptr m_colorCorrectEffect;
 
 		//constructs the TTN_Collision objects
 		void ConstructCollisions();

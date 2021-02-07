@@ -14,16 +14,10 @@ namespace Titan {
 	class TTN_Backend {
 	public:
 		//sets the pointer to the window 
-		static void setWindow(GLFWwindow* window) {
-			m_window = window;
-		}
+		static void setWindow(GLFWwindow* window) { m_window = window; }
 
 		//gets the window size
-		static glm::ivec2 GetWindowSize() {
-			int width, height;
-			glfwGetWindowSize(m_window, &width, &height);
-			return glm::ivec2(width, height);
-		}
+		static glm::ivec2 GetWindowSize();
 
 	private:
 		//pointer to the window

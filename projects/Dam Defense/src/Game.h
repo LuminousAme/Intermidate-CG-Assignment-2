@@ -113,6 +113,10 @@ public:
 
 	TTN_AudioEngine& engine = TTN_AudioEngine::Instance();
 
+	TTN_LUT3D::sltptr warmMap;
+	TTN_LUT3D::sltptr coldMap;
+	TTN_LUT3D::sltptr customMap;
+
 	//Entities
 protected:
 	entt::entity camera;

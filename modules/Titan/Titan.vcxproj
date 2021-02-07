@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClInclude Include="include\Titan\Application.h" />
     <ClInclude Include="include\Titan\AssetSystem.h" />
+    <ClInclude Include="include\Titan\Backend.h" />
     <ClInclude Include="include\Titan\Camera.h" />
     <ClInclude Include="include\Titan\ColorCorrect.h" />
     <ClInclude Include="include\Titan\Framebuffer.h" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\AssetSystem.cpp" />
+    <ClCompile Include="src\Backend.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ColorCorrect.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
