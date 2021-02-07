@@ -117,6 +117,7 @@ public:
 	TTN_LUT3D::sltptr coldMap;
 	TTN_LUT3D::sltptr customMap;
 
+	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
 	//Entities
 protected:
 	entt::entity camera;

@@ -284,7 +284,7 @@ void Game::SetUpAssets()
 	warmMap = TTN_AssetSystem::GetLUT("Warm LUT");
 	coldMap = TTN_AssetSystem::GetLUT("Cool LUT");
 	customMap = TTN_AssetSystem::GetLUT("Custom LUT");
-
+	
 	shaderColorCorrect = TTN_AssetSystem::GetShader("Color correct shader");
 
 	//// SHADERS ////
@@ -675,6 +675,12 @@ void Game::SetUpOtherData()
 		expolsionParticle.SetOneStartSize(1.0f);
 		expolsionParticle.SetOneStartSpeed(4.5f);
 	}
+
+	glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
+	m_colorCorrectEffect = TTN_ColorCorrect::Create();
+	m_colorCorrectEffect->Init(windowSize.x, windowSize.y);
+	m_PostProcessingEffects.push_back(m_colorCorrectEffect);
+
 }
 
 //restarts the game

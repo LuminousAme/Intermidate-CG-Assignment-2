@@ -38,7 +38,7 @@ namespace Titan {
 		//constructor with data, using basic scene level lighting information
 		TTN_Scene(glm::vec3 AmbientLightingColor, float AmbientLightingStrength, std::string name = std::string());
 
-		//copy, move, and assingment operators
+		//copy, move, and assignment operators
 		TTN_Scene(const TTN_Scene& oldScene) = default;
 		TTN_Scene(TTN_Scene&&) = default;
 		TTN_Scene& operator=(TTN_Scene&) = default;

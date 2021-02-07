@@ -36,6 +36,10 @@ namespace Titan {
 		glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
 		m_emptyEffect = TTN_PostEffect::Create();
 		m_emptyEffect->Init(windowSize.x, windowSize.y);
+
+		m_colorCorrectEffect = TTN_ColorCorrect::Create();
+		m_colorCorrectEffect->Init(windowSize.x, windowSize.y);
+		m_PostProcessingEffects.push_back(m_colorCorrectEffect);
 	}
 
 	//construct with lightning data
@@ -65,6 +69,10 @@ namespace Titan {
 		glm::ivec2 windowSize = TTN_Backend::GetWindowSize();
 		m_emptyEffect = TTN_PostEffect::Create();
 		m_emptyEffect->Init(windowSize.x, windowSize.y);
+
+		m_colorCorrectEffect = TTN_ColorCorrect::Create();
+		m_colorCorrectEffect->Init(windowSize.x, windowSize.y);
+		m_PostProcessingEffects.push_back(m_colorCorrectEffect);
 	}
 
 	//destructor
