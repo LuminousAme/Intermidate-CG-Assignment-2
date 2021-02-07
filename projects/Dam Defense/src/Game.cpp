@@ -357,20 +357,25 @@ void Game::SetUpAssets()
 	cannonMat = TTN_Material::Create();
 	cannonMat->SetAlbedo(cannonText);
 	cannonMat->SetShininess(128.0f);
+	m_mats.push_back(cannonMat);
 
 	boat1Mat = TTN_Material::Create();
 	boat1Mat->SetAlbedo(boat1Text);
 	boat1Mat->SetShininess(128.0f);
+	m_mats.push_back(boat1Mat);
 	boat2Mat = TTN_Material::Create();
 	boat2Mat->SetAlbedo(boat2Text);
 	boat2Mat->SetShininess(128.0f);
+	m_mats.push_back(boat2Mat);
 	boat3Mat = TTN_Material::Create();
 	boat3Mat->SetAlbedo(boat3Text);
 	boat3Mat->SetShininess(128.0f);
+	m_mats.push_back(boat3Mat);
 
 	flamethrowerMat = TTN_Material::Create();
 	flamethrowerMat->SetAlbedo(flamethrowerText);
 	flamethrowerMat->SetShininess(128.0f);
+	m_mats.push_back(flamethrowerMat);
 
 	skyboxMat = TTN_Material::Create();
 	skyboxMat->SetSkybox(skyboxText);
@@ -382,9 +387,11 @@ void Game::SetUpAssets()
 
 	birdMat = TTN_Material::Create();
 	birdMat->SetAlbedo(birdText);
+	m_mats.push_back(birdMat);
 
 	damMat = TTN_Material::Create();
 	damMat->SetAlbedo(damText);
+	m_mats.push_back(damMat);
 }
 
 //create the scene's initial entities
@@ -526,7 +533,6 @@ void Game::SetUpEntities()
 			else if (i == 4) {
 				ftTrans.SetPos(glm::vec3(-40.0f, -6.0f, 2.0f));
 			}
-			else {}
 
 			//attach that transform to the entity
 			AttachCopy<TTN_Transform>(flamethrowers[i], ftTrans);
@@ -684,6 +690,16 @@ void Game::SetUpOtherData()
 	m_applyWarmLut = false;
 	m_applyCoolLut = false;
 	m_applyCustomLut = false;
+
+	//set the lighting bools
+	m_noLighting = false;
+	m_ambientOnly = false;
+	m_specularOnly = false;
+	m_ambientAndSpecular = true;
+	m_ambientSpecularAndOutline = false;
+
+	for (int i = 0; i < m_mats.size(); i++)
+		m_mats[i]->SetOutlineSize(m_outlineSize);
 }
 
 //restarts the game
@@ -1209,6 +1225,104 @@ void Game::ImGui()
 	}
 
 	if (ImGui::CollapsingHeader("Effect Controls")) {
+		//Lighting controls
+		//size of the outline
+		if (ImGui::SliderFloat("Outline Size", &m_outlineSize, 0.0f, 1.0f)) {
+			//set the size of the outline in the materials
+			for (int i = 0; i < m_mats.size(); i++)
+				m_mats[i]->SetOutlineSize(m_outlineSize);
+		}
+
+		//No ligthing
+		if (ImGui::Checkbox("No Lighting", &m_noLighting)) {
+			//set no lighting to true
+			m_noLighting = true;
+			//change all the other lighting settings to false
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(false);
+				m_mats[i]->SetHasSpecular(false);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+		
+		//Ambient only
+		if (ImGui::Checkbox("Ambient Lighting Only", &m_ambientOnly)) {
+			//set ambient only to true
+			m_ambientOnly = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(false);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Specular only
+		if (ImGui::Checkbox("Specular Lighting Only", &m_specularOnly)) {
+			//set Specular only to true
+			m_specularOnly = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(false);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Ambient and specular
+		if (ImGui::Checkbox("Ambient and Specular Lighting", &m_ambientAndSpecular)) {
+			//set ambient and specular to true
+			m_ambientAndSpecular = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Ambient, specular, and lineart outline 
+		if (ImGui::Checkbox("Ambient, Specular, and custom(outline) Lighting", &m_ambientSpecularAndOutline)) {
+			//set ambient, specular, and outline to true
+			m_ambientSpecularAndOutline = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(true);
+			}
+		}
+
 		//Lut controls
 
 		//toogles the warm color correction effect on or off

@@ -13,12 +13,11 @@ uniform float u_Shininess;
 uniform vec3  u_AmbientCol;
 uniform float u_AmbientStrength;
 
-//bools for different lighting effects
-uniform bool u_Option1;
-uniform bool u_Option2;
-uniform bool u_Option3;
-uniform bool u_Option4;
-uniform bool u_Option5;	
+//uniforms for different lighting effects
+uniform int u_hasAmbientLighting;
+uniform int u_hasSpecularLighting;
+uniform int u_hasOutline;
+uniform float u_OutlineSize;
 
 //Specfic light stuff
 uniform vec3  u_LightPos[16];
@@ -38,7 +37,7 @@ uniform vec3  u_CamPos;
 out vec4 frag_color;
 
 //functions 
-vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec, bool u_Option1, bool u_Option2, bool u_Option3, bool u_Option4, bool u_Option5);
+vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec);
 
 void main() {
 	//calcualte the vectors needed for lighting
@@ -46,30 +45,33 @@ void main() {
 	vec3 viewDir  = normalize(u_CamPos - inPos);
 
 	//combine everything
-	vec3 result = u_AmbientCol * u_AmbientStrength; // global ambient light
+	vec3 result = u_AmbientCol * u_AmbientStrength * u_hasAmbientLighting; // global ambient light
 
 	//add the results from all the lights
 	for(int i = 0; i < u_NumOfLights; i++) {
 		result = result + CalcLight(u_LightPos[i], u_LightCol[i], u_AmbientLightStrength[i], u_SpecularLightStrength[i], 
 					u_LightAttenuationConstant[i], u_LightAttenuationLinear[i], u_LightAttenuationQuadratic[i], 
-					N, viewDir, 1.0, u_Option1,u_Option2,u_Option3,u_Option4,u_Option5);
+					N, viewDir, 1.0);
 	}
 
 	//add that to the texture color
 	result = result * inColor;
 
+	//calculate if it should be coloured as a black outline
+	float edge = max(step(u_OutlineSize, abs(dot(viewDir, N))), u_hasOutline);
+
 	//save the result and pass it on
-	frag_color = vec4(result, 1.0);
+	frag_color = vec4(result, 1.0) * vec4(vec3(edge), 1.0);
 }
 
-vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec, bool u_Option1, bool u_Option2, bool u_Option3, bool u_Option4, bool u_Option5 ) {
+vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst, float attenLine, float attenQuad, vec3 norm, vec3 viewDir, float textSpec) {
 	//ambient 
-	vec3 ambient = ambStr * col;
+	vec3 ambient = ambStr * col * u_hasAmbientLighting;
 
 	//diffuse
 	vec3 lightDir = normalize(pos - inPos);
 	float dif = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = dif * col;
+	vec3 diffuse = dif * col * u_hasAmbientLighting * u_hasSpecularLighting;
 
 	//attenuation
 	float dist = length(pos - inPos);
@@ -81,32 +83,7 @@ vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst
 	//specular
 	vec3 halfWay =  normalize(lightDir + viewDir);
 	float spec = pow(max(dot(norm, halfWay), 0.0), u_Shininess); 
-	vec3 specular = specStr * textSpec * spec * col;
+	vec3 specular = specStr * textSpec * spec * col * u_hasSpecularLighting;
 	
-	//no light
-	if(u_Option1 == true){
-		return vec3(0.0);
-	}
-	//ambient
-	else if (u_Option2 == true){
-		return ambient;
-	}
-	//specular
-	else if (u_Option3 == true){
-		return specular;
-	}
-	//ambient + specular
-	else if (u_Option4 == true){
-		return (ambient + specular);
-	}
-		//custom + ambient specular
-	else if (u_Option5 == true){
-		return (ambient + specular + diffuse);
-	}
-
-	else {
-	//otherwise combine and return the regualr/original effect
-	return ((ambient + diffuse + specular) * attenuation);
-	}
-
+	return ((ambient + diffuse + specular) * attenuation));
 }

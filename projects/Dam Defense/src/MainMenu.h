@@ -108,6 +108,16 @@ protected:
 	bool m_applyCoolLut;
 	bool m_applyCustomLut;
 
+	bool m_noLighting;
+	bool m_ambientOnly;
+	bool m_specularOnly;
+	bool m_ambientAndSpecular;
+	bool m_ambientSpecularAndOutline;
+	//float to control outline size
+	float m_outlineSize = 0.2f;
+
+	std::vector<TTN_Material::smatptr> m_mats;
+
 	void ImGui();
 };
 

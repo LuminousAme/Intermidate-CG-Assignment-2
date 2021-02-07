@@ -99,6 +99,7 @@ public:
 	TTN_Material::smatptr treeMat;
 	TTN_Material::smatptr rockMat;
 	TTN_Material::smatptr damMat;
+	std::vector<TTN_Material::smatptr> m_mats;
 
 	TTN_Material::smatptr cannonMat;
 	TTN_Material::smatptr skyboxMat;
@@ -191,15 +192,6 @@ protected:
 	TTN_ParticleTemplate fireParticle;//fire particles
 	TTN_ParticleTemplate expolsionParticle;//expolsion particles
 
-//CG assingment 2 stuff
-protected:
-	//color correction effect
-	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
-	//bools for imgui controls
-	bool m_applyWarmLut;
-	bool m_applyCoolLut;
-	bool m_applyCustomLut;
-
 	//set up functions, called by InitScene()
 protected:
 	void SetUpAssets();
@@ -233,6 +225,23 @@ protected:
 	void DeleteCannonballs();
 
 	void CreateExpolsion(glm::vec3 location);
+
+	//CG assingment 2 stuff
+protected:
+	//color correction effect
+	TTN_ColorCorrect::scolcorptr m_colorCorrectEffect;
+	//bools for imgui controls
+	bool m_applyWarmLut;
+	bool m_applyCoolLut;
+	bool m_applyCustomLut;
+
+	bool m_noLighting;
+	bool m_ambientOnly;
+	bool m_specularOnly;
+	bool m_ambientAndSpecular;
+	bool m_ambientSpecularAndOutline;
+	//float to control outline size
+	float m_outlineSize = 0.2f;
 };
 
 inline float SmoothStep(float t) {

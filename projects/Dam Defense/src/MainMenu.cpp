@@ -145,16 +145,19 @@ void MainMenu::SetUpAssets()
 	cannonMat = TTN_Material::Create();
 	cannonMat->SetAlbedo(cannonText);
 	cannonMat->SetShininess(128.0f);
+	m_mats.push_back(cannonMat);
 
 	flamethrowerMat = TTN_Material::Create();
 	flamethrowerMat->SetAlbedo(flamethrowerText);
 	flamethrowerMat->SetShininess(128.0f);
+	m_mats.push_back(flamethrowerMat);
 
 	skyboxMat = TTN_Material::Create();
 	skyboxMat->SetSkybox(skyboxText);
 
 	damMat = TTN_Material::Create();
 	damMat->SetAlbedo(damText);
+	m_mats.push_back(damMat);
 }
 
 void MainMenu::SetUpEntities()
@@ -347,71 +350,179 @@ void MainMenu::SetUpOtherData()
 	m_applyWarmLut = false;
 	m_applyCoolLut = false;
 	m_applyCustomLut = false;
+
+	//set the lighting bools
+	m_noLighting = false;
+	m_ambientOnly = false;
+	m_specularOnly = false;
+	m_ambientAndSpecular = true;
+	m_ambientSpecularAndOutline = false;
+
+	for (int i = 0; i < m_mats.size(); i++)
+		m_mats[i]->SetOutlineSize(m_outlineSize);
 }
 
 //imgui update for this scene and frame
 void MainMenu::ImGui()
 {
-	ImGui::Begin("Controls"); 
+	ImGui::Begin("Controls");
 
 	if (ImGui::CollapsingHeader("Effect Controls")) {
-			//Lut controls
+		//Lighting controls
+		//size of the outline
+		if (ImGui::SliderFloat("Outline Size", &m_outlineSize, 0.0f, 1.0f)) {
+			//set the size of the outline in the materials
+			for (int i = 0; i < m_mats.size(); i++)
+				m_mats[i]->SetOutlineSize(m_outlineSize);
+		}
 
-			//toogles the warm color correction effect on or off
-			if (ImGui::Checkbox("Warm Color Correction", &m_applyWarmLut)) {
-				switch (m_applyWarmLut)
-				{
-				case true:
-					//if it's been turned on set the effect to render
-					m_colorCorrectEffect->SetShouldApply(true);
-					m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Warm LUT"));
-					//and make sure the cool and customs luts are set not to render
-					m_applyCoolLut = false;
-					m_applyCustomLut = false;
-					break;
-				case false:
-					//if it's been turned of set the effect not to render
-					m_colorCorrectEffect->SetShouldApply(false);
-					break;
-				}
-			}
+		//No ligthing
+		if (ImGui::Checkbox("No Lighting", &m_noLighting)) {
+			//set no lighting to true
+			m_noLighting = true;
+			//change all the other lighting settings to false
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
 
-			//toogles the cool color correction effect on or off
-			if (ImGui::Checkbox("Cool Color Correction", &m_applyCoolLut)) {
-				switch (m_applyCoolLut)
-				{
-				case true:
-					//if it's been turned on set the effect to render
-					m_colorCorrectEffect->SetShouldApply(true);
-					m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Cool LUT"));
-					//and make sure the warm and customs luts are set not to render
-					m_applyWarmLut = false;
-					m_applyCustomLut = false;
-					break;
-				case false:
-					m_colorCorrectEffect->SetShouldApply(false);
-					break;
-				}
-			}
-
-			//toogles the custom color correction effect on or off
-			if (ImGui::Checkbox("Custom Color Correction", &m_applyCustomLut)) {
-				switch (m_applyCustomLut)
-				{
-				case true:
-					//if it's been turned on set the effect to render
-					m_colorCorrectEffect->SetShouldApply(true);
-					m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Custom LUT"));
-					//and make sure the warm and cool luts are set not to render
-					m_applyWarmLut = false;
-					m_applyCoolLut = false;
-					break;
-				case false:
-					m_colorCorrectEffect->SetShouldApply(false);
-					break;
-				}
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(false);
+				m_mats[i]->SetHasSpecular(false);
+				m_mats[i]->SetHasOutline(false);
 			}
 		}
+
+		//Ambient only
+		if (ImGui::Checkbox("Ambient Lighting Only", &m_ambientOnly)) {
+			//set ambient only to true
+			m_ambientOnly = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(false);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Specular only
+		if (ImGui::Checkbox("Specular Lighting Only", &m_specularOnly)) {
+			//set Specular only to true
+			m_specularOnly = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_ambientAndSpecular = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(false);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Ambient and specular
+		if (ImGui::Checkbox("Ambient and Specular Lighting", &m_ambientAndSpecular)) {
+			//set ambient and specular to true
+			m_ambientAndSpecular = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientSpecularAndOutline = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(false);
+			}
+		}
+
+		//Ambient, specular, and lineart outline 
+		if (ImGui::Checkbox("Ambient, Specular, and custom(outline) Lighting", &m_ambientSpecularAndOutline)) {
+			//set ambient, specular, and outline to true
+			m_ambientSpecularAndOutline = true;
+			//change all the other lighting settings to false
+			m_noLighting = false;
+			m_ambientOnly = false;
+			m_specularOnly = false;
+			m_ambientAndSpecular = false;
+
+			//set that data in the materials
+			for (int i = 0; i < m_mats.size(); i++) {
+				m_mats[i]->SetHasAmbient(true);
+				m_mats[i]->SetHasSpecular(true);
+				m_mats[i]->SetHasOutline(true);
+			}
+		}
+
+		//Lut controls
+
+		//toogles the warm color correction effect on or off
+		if (ImGui::Checkbox("Warm Color Correction", &m_applyWarmLut)) {
+			switch (m_applyWarmLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Warm LUT"));
+				//and make sure the cool and customs luts are set not to render
+				m_applyCoolLut = false;
+				m_applyCustomLut = false;
+				break;
+			case false:
+				//if it's been turned of set the effect not to render
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
+
+		//toogles the cool color correction effect on or off
+		if (ImGui::Checkbox("Cool Color Correction", &m_applyCoolLut)) {
+			switch (m_applyCoolLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Cool LUT"));
+				//and make sure the warm and customs luts are set not to render
+				m_applyWarmLut = false;
+				m_applyCustomLut = false;
+				break;
+			case false:
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
+
+		//toogles the custom color correction effect on or off
+		if (ImGui::Checkbox("Custom Color Correction", &m_applyCustomLut)) {
+			switch (m_applyCustomLut)
+			{
+			case true:
+				//if it's been turned on set the effect to render
+				m_colorCorrectEffect->SetShouldApply(true);
+				m_colorCorrectEffect->SetCube(TTN_AssetSystem::GetLUT("Custom LUT"));
+				//and make sure the warm and cool luts are set not to render
+				m_applyWarmLut = false;
+				m_applyCoolLut = false;
+				break;
+			case false:
+				m_colorCorrectEffect->SetShouldApply(false);
+				break;
+			}
+		}
+	}
 
 	ImGui::End();
 }
@@ -532,7 +643,7 @@ void MainMenuUI::Update(float deltaTime)
 
 	//get play buttons transform
 	TTN_Transform playButtonTrans = Get<TTN_Transform>(playButton);
-	if (mousePosWorldSpace.x < playButtonTrans.GetPos().x + 0.5f  * abs(playButtonTrans.GetScale().x) && 
+	if (mousePosWorldSpace.x < playButtonTrans.GetPos().x + 0.5f * abs(playButtonTrans.GetScale().x) &&
 		mousePosWorldSpace.x > playButtonTrans.GetPos().x - 0.5f * abs(playButtonTrans.GetScale().x) &&
 		mousePosWorldSpace.y < playButtonTrans.GetPos().y + 0.5f * abs(playButtonTrans.GetScale().y) &&
 		mousePosWorldSpace.y > playButtonTrans.GetPos().y - 0.5f * abs(playButtonTrans.GetScale().y)) {

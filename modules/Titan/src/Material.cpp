@@ -9,7 +9,8 @@
 namespace Titan {
 	//default constructor
 	TTN_Material::TTN_Material() 
-		: m_Shininess(0), m_HeightInfluence(1.0f)
+		: m_Shininess(0), m_HeightInfluence(1.0f), m_hasAmbientLighting(true), m_hasSpecularLighting(true), 
+		m_hasOutline(false), m_outlineSize(0.0f)
 	{
 		//set the albedo to an all white texture by default
 		m_Albedo = TTN_Texture2D::Create();
@@ -67,55 +68,27 @@ namespace Titan {
 		m_HeightInfluence = influence;
 	}
 
-	//// Setters for shader bools ////
-	void TTN_Material::SetNoLight(bool noLight)
+	//Sets wheter or not this material has ambient lighting
+	void TTN_Material::SetHasAmbient(bool hasAmbient)
 	{
-		m_NoLight = noLight;
-		if (m_NoLight == true) {
-			m_Ambient = false;
-			m_AmbientSpecular = false;
-			m_AmbientSpecularCustom = false;
-			m_Specular = false;
-		}
+		m_hasAmbientLighting = hasAmbient;
 	}
-	void TTN_Material::SetAmbient(bool ambient)
+
+	//Sets wheter or not this material has specular lighting
+	void TTN_Material::SetHasSpecular(bool hasSpecular)
 	{
-		m_Ambient = ambient;
-		if (m_Ambient == true) {
-			m_NoLight = false;
-			m_AmbientSpecular = false;
-			m_AmbientSpecularCustom = false;
-			m_Specular = false;
-		}
+		m_hasSpecularLighting = hasSpecular;
 	}
-	void TTN_Material::SetSpecular(bool specular)
+
+	//Sets wheter or not this material has a line art like outline effect
+	void TTN_Material::SetHasOutline(bool hasOutline)
 	{
-		m_Specular = specular;
-		if (m_Specular == true) {
-			m_Ambient = false;
-			m_AmbientSpecular = false;
-			m_AmbientSpecularCustom = false;
-			m_NoLight = false;
-		}
+		m_hasOutline = hasOutline;
 	}
-	void TTN_Material::SetAmbientSpecular(bool ambientSpecular)
+
+	//Sets the size (from 0.0 to 1.0) of the line art outline
+	void TTN_Material::SetOutlineSize(float outlineSize)
 	{
-		m_AmbientSpecular = ambientSpecular;
-		if (m_NoLight == true) {
-			m_Ambient = false;
-			m_AmbientSpecular = false;
-			m_AmbientSpecularCustom = false;
-			m_Specular = false;
-		}
-	}
-	void TTN_Material::SetCustom(bool custom)
-	{
-		m_AmbientSpecularCustom = custom;
-		if (m_NoLight == true) {
-			m_Ambient = false;
-			m_AmbientSpecular = false;
-			m_AmbientSpecularCustom = false;
-			m_Specular = false;
-		}
+		m_outlineSize = outlineSize;
 	}
 }

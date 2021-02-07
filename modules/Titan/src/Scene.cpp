@@ -400,6 +400,16 @@ namespace Titan {
 
 				//stuff from the camera
 				shader->SetUniform("u_CamPos", Get<TTN_Transform>(m_Cam).GetPos());
+
+				//if it has a material send some lighting and shading data from that material
+				if (renderer.GetMat() != nullptr) {
+					//and material details about the lighting and shading
+					shader->SetUniform("u_hasAmbientLighting", (int)(renderer.GetMat()->GetHasAmbient()));
+					shader->SetUniform("u_hasSpecularLighting", (int)(renderer.GetMat()->GetHasSpecular()));
+					//the ! is because it has to be reversed in the shader
+					shader->SetUniform("u_hasOutline", (int)(!renderer.GetMat()->GetHasOutline()));
+					shader->SetUniform("u_OutlineSize", renderer.GetMat()->GetOutlineSize());
+				}
 			}
 
 			//if it's not the skybox shader, set some uniforms for lighting
@@ -442,9 +452,19 @@ namespace Titan {
 
 				//and tell it how many lights there actually are
 				shader->SetUniform("u_NumOfLights", (int)m_Lights.size());
-
+				
 				//stuff from the camera
 				shader->SetUniform("u_CamPos", Get<TTN_Transform>(m_Cam).GetPos());
+
+				//if it has a material send some lighting and shading data from that material
+				if (renderer.GetMat() != nullptr) {
+					//and material details about the lighting and shading
+					shader->SetUniform("u_hasAmbientLighting", (int)(renderer.GetMat()->GetHasAmbient()));
+					shader->SetUniform("u_hasSpecularLighting", (int)(renderer.GetMat()->GetHasSpecular()));
+					//the ! is because it has to be reversed in the shader
+					shader->SetUniform("u_hasOutline", (int)(!renderer.GetMat()->GetHasOutline()));
+					shader->SetUniform("u_OutlineSize", renderer.GetMat()->GetOutlineSize());
+				}
 			}
 
 			//if the mesh has a material send data from that
@@ -459,14 +479,6 @@ namespace Titan {
 					if (shader->GetFragShaderDefaultStatus() != (int)TTN_DefaultShaders::FRAG_SKYBOX
 						&& shader->GetFragShaderDefaultStatus() != (int)TTN_DefaultShaders::NOT_DEFAULT)
 						shader->SetUniform("u_Shininess", renderer.GetMat()->GetShininess());
-
-				//if they're using a frag with lighting
-				if (shader->GetFragShaderDefaultStatus() == 3 || shader->GetFragShaderDefaultStatus() == 4 || shader->GetFragShaderDefaultStatus() == 5) {
-					shader->SetUniform("u_Option1", renderer.GetMat()->GetNoLight());
-
-				}
-
-
 
 				//texture slot to dynamically send textures across different types of shaders
 				int textureSlot = 0;
@@ -648,7 +660,7 @@ namespace Titan {
 					const btVector3& location2 = point.getPositionWorldOnB();
 					glm::vec3 collisionLocation = (glm::vec3(location.getX(), location.getY(), location.getZ())
 						+ glm::vec3(location2.getX(), location2.getY(), location2.getZ())) * 0.5f;
-
+					
 					//and make a collision object
 					TTN_Collision::scolptr newCollision = TTN_Collision::Create();
 					newCollision->SetBody1(static_cast<entt::entity>(reinterpret_cast<uint32_t>(b0->getUserPointer())));
