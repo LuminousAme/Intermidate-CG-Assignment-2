@@ -286,16 +286,24 @@ namespace Titan {
 				}
 			}
 			//at the end, draw to the screen
-			if (index == -1)
+			if (index == -1) {
 				//if none should be applied, just draw the empty effect
 				m_emptyEffect->DrawToScreen();
-			else
+				//and save it as the last effect played
+				TTN_Backend::SetLastEffect(m_emptyEffect);
+			}
+			else {
 				//if they should be applied, draw from the last effect
 				m_PostProcessingEffects[index]->DrawToScreen();
+				//and save it
+				TTN_Backend::SetLastEffect(m_PostProcessingEffects[index]);
+			}
 		}
 		//if there are no post processing effects to apply, just draw the empty effect
 		else {
 			m_emptyEffect->DrawToScreen();
+			//and save it as the last effect played
+			TTN_Backend::SetLastEffect(m_emptyEffect);
 		}
 	}
 
@@ -336,6 +344,12 @@ namespace Titan {
 
 		//bind the empty effect
 		m_emptyEffect->BindBuffer(0); //this gets unbound in postRender
+
+		//before going through see if it needs to render another scene as the background first 
+		if (TTN_Backend::GetLastEffect() != nullptr) {
+			//if it does, apply the buffer from that scene before drawing
+			m_emptyEffect->ApplyEffect(TTN_Backend::GetLastEffect());
+		}
 
 		//go through every entity with a transform and a mesh renderer and render the mesh
 		m_RenderGroup->each([&](entt::entity entity, TTN_Transform& transform, TTN_Renderer& renderer) {

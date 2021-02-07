@@ -176,6 +176,9 @@ namespace Titan {
 		//end Imgui
 		EndImgui();
 
+		//set the last effect to nullpointer so it's set up correctly for the next frame
+		TTN_Backend::SetLastEffect(nullptr);
+
 		//swap the buffers so all the drawings that the scenes just did are acutally visible 
 		glfwSwapBuffers(m_window);
 	}
