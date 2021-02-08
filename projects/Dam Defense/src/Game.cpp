@@ -101,6 +101,7 @@ void Game::PostRender()
 		//vert shader
 		//bind the height map texture
 		terrainMap->Bind(0);
+		TTN_AssetSystem::GetTexture2D("Normal Map")->Bind(1);
 
 		//pass the scale uniform
 		shaderProgramTerrain->SetUniform("u_scale", terrainScale);
@@ -118,13 +119,57 @@ void Game::PostRender()
 
 		//frag shader
 		//bind the textures
-		sandText->Bind(1);
-		rockText->Bind(2);
-		grassText->Bind(3);
+		sandText->Bind(2);
+		rockText->Bind(3);
+		grassText->Bind(4);
+
+		m_mats[0]->GetDiffuseRamp()->Bind(10);
+		m_mats[0]->GetSpecularMap()->Bind(11);
 
 		//send lighting from the scene
 		shaderProgramTerrain->SetUniform("u_AmbientCol", TTN_Scene::GetSceneAmbientColor());
 		shaderProgramTerrain->SetUniform("u_AmbientStrength", TTN_Scene::GetSceneAmbientLightStrength());
+		shaderProgramTerrain->SetUniform("u_Shininess", 128.0f);
+		shaderProgramTerrain->SetUniform("u_hasAmbientLighting", (int)m_mats[0]->GetHasAmbient());
+		shaderProgramTerrain->SetUniform("u_hasSpecularLighting", (int)m_mats[0]->GetHasSpecular());
+		shaderProgramTerrain->SetUniform("u_hasOutline", (int)m_mats[0]->GetHasOutline());
+		shaderProgramTerrain->SetUniform("u_useDiffuseRamp", m_mats[0]->GetUseDiffuseRamp());
+		shaderProgramTerrain->SetUniform("u_useSpecularRamp", (int)m_mats[0]->GetUseSpecularRamp());
+		//stuff from the light
+		glm::vec3 lightPositions[16];
+		glm::vec3 lightColor[16];
+		float lightAmbientStr[16];
+		float lightSpecStr[16];
+		float lightAttenConst[16];
+		float lightAttenLinear[16];
+		float lightAttenQuadartic[16];
+
+		for (int i = 0; i < 16 && i < m_Lights.size(); i++) {
+			auto& light = Get<TTN_Light>(m_Lights[i]);
+			auto& lightTrans = Get<TTN_Transform>(m_Lights[i]);
+			lightPositions[i] = lightTrans.GetPos();
+			lightColor[i] = light.GetColor();
+			lightAmbientStr[i] = light.GetAmbientStrength();
+			lightSpecStr[i] = light.GetSpecularStrength();
+			lightAttenConst[i] = light.GetConstantAttenuation();
+			lightAttenLinear[i] = light.GetConstantAttenuation();
+			lightAttenQuadartic[i] = light.GetQuadraticAttenuation();
+		}
+
+		//send all the data about the lights to glsl
+		shaderProgramTerrain->SetUniform("u_LightPos", lightPositions[0], 16);
+		shaderProgramTerrain->SetUniform("u_LightCol", lightColor[0], 16);
+		shaderProgramTerrain->SetUniform("u_AmbientLightStrength", lightAmbientStr[0], 16);
+		shaderProgramTerrain->SetUniform("u_SpecularLightStrength", lightSpecStr[0], 16);
+		shaderProgramTerrain->SetUniform("u_LightAttenuationConstant", lightAttenConst[0], 16);
+		shaderProgramTerrain->SetUniform("u_LightAttenuationLinear", lightAttenLinear[0], 16);
+		shaderProgramTerrain->SetUniform("u_LightAttenuationQuadratic", lightAttenQuadartic[0], 16);
+
+		//and tell it how many lights there actually are
+		shaderProgramTerrain->SetUniform("u_NumOfLights", (int)m_Lights.size());
+
+		//stuff from the camera
+		shaderProgramTerrain->SetUniform("u_CamPos", Get<TTN_Transform>(camera).GetPos());
 
 		//render the terrain
 		terrainPlain->GetVAOPointer()->Render();
