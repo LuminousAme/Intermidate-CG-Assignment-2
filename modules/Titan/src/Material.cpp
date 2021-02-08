@@ -10,7 +10,7 @@ namespace Titan {
 	//default constructor
 	TTN_Material::TTN_Material() 
 		: m_Shininess(0), m_HeightInfluence(1.0f), m_hasAmbientLighting(true), m_hasSpecularLighting(true), 
-		m_hasOutline(false), m_outlineSize(0.0f)
+		m_hasOutline(false), m_outlineSize(0.0f), m_useDiffuseRamp(false), m_useSpecularRamp(false)
 	{
 		//set the albedo to an all white texture by default
 		m_Albedo = TTN_Texture2D::Create();
@@ -26,6 +26,14 @@ namespace Titan {
 		//set the height map to an all black texture by default 
 		m_HeightMap = TTN_Texture2D::Create();
 		m_HeightMap->Clear(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+		//set the diffuse ramp to an all white texture by default
+		m_diffuseRamp = TTN_Texture2D::Create();
+		m_diffuseRamp->Clear(glm::vec4(1.0f));
+
+		//set the specular ramp to an all white texture by default
+		m_specularRamp = TTN_Texture2D::Create();
+		m_specularRamp->Clear(glm::vec4(1.0f));
 	}
 
 	//default desctructor
@@ -90,5 +98,29 @@ namespace Titan {
 	void TTN_Material::SetOutlineSize(float outlineSize)
 	{
 		m_outlineSize = outlineSize;
+	}
+
+	//set the diffuse ramp for toon shading
+	void TTN_Material::SetDiffuseRamp(TTN_Texture2D::st2dptr ramp)
+	{
+		m_diffuseRamp = ramp;
+	}
+
+	//set wheter or not the diffuse ramp should be sampled by the default shaders
+	void TTN_Material::SetUseDiffuseRamp(bool useRamp)
+	{
+		m_useDiffuseRamp = useRamp;
+	}
+
+	//set the specular ramp for toon shading
+	void TTN_Material::SetSpecularRamp(TTN_Texture2D::st2dptr ramp)
+	{
+		m_specularRamp = ramp;
+	}
+
+	//set wheter or not the specular ramp should be sampled by the default shaders
+	void TTN_Material::SetUseSpecularRamp(bool useRamp)
+	{
+		m_useSpecularRamp = useRamp;
 	}
 }

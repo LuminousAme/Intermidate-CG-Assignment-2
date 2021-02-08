@@ -409,6 +409,14 @@ namespace Titan {
 					//the ! is because it has to be reversed in the shader
 					shader->SetUniform("u_hasOutline", (int)(!renderer.GetMat()->GetHasOutline()));
 					shader->SetUniform("u_OutlineSize", renderer.GetMat()->GetOutlineSize());
+
+					//wheter or not ramps for toon shading should be used
+					shader->SetUniform("u_useDiffuseRamp", (int)renderer.GetMat()->GetUseDiffuseRamp());
+					shader->SetUniform("u_useSpecularRamp", (int)renderer.GetMat()->GetUseSpecularRamp());
+
+					//bind the ramps as textures
+					renderer.GetMat()->GetDiffuseRamp()->Bind(10);
+					renderer.GetMat()->GetSpecularRamp()->Bind(11);
 				}
 			}
 
@@ -464,6 +472,14 @@ namespace Titan {
 					//the ! is because it has to be reversed in the shader
 					shader->SetUniform("u_hasOutline", (int)(!renderer.GetMat()->GetHasOutline()));
 					shader->SetUniform("u_OutlineSize", renderer.GetMat()->GetOutlineSize());
+
+					//wheter or not ramps for toon shading should be used
+					shader->SetUniform("u_useDiffuseRamp", (int)renderer.GetMat()->GetUseDiffuseRamp());
+					shader->SetUniform("u_useSpecularRamp", (int)renderer.GetMat()->GetUseSpecularRamp());
+
+					//bind the ramps as textures
+					renderer.GetMat()->GetDiffuseRamp()->Bind(10);
+					renderer.GetMat()->GetSpecularRamp()->Bind(11);
 				}
 			}
 

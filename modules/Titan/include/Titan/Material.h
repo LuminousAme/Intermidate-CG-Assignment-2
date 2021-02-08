@@ -42,6 +42,10 @@ namespace Titan {
 		void SetHasSpecular(bool hasSpecular);
 		void SetHasOutline(bool hasOutline);
 		void SetOutlineSize(float outlineSize);
+		void SetDiffuseRamp(TTN_Texture2D::st2dptr ramp);
+		void SetUseDiffuseRamp(bool useRamp);
+		void SetSpecularRamp(TTN_Texture2D::st2dptr ramp);
+		void SetUseSpecularRamp(bool useRamp);
 		
 		//getters
 		TTN_Texture2D::st2dptr GetAlbedo() { return m_Albedo; }
@@ -54,6 +58,10 @@ namespace Titan {
 		bool GetHasSpecular() { return m_hasSpecularLighting; }
 		bool GetHasOutline() { return m_hasOutline; }
 		float GetOutlineSize() { return m_outlineSize; }
+		TTN_Texture2D::st2dptr GetDiffuseRamp() { return m_diffuseRamp; }
+		bool GetUseDiffuseRamp() { return m_useDiffuseRamp; }
+		TTN_Texture2D::st2dptr GetSpecularRamp() { return m_specularRamp; }
+		bool GetUseSpecularRamp() { return m_useSpecularRamp; }
 
 	private:
 		//albedo 
@@ -73,5 +81,11 @@ namespace Titan {
 		bool m_hasSpecularLighting;
 		bool m_hasOutline;
 		float m_outlineSize;
+
+		//toon shading ramps
+		TTN_Texture2D::st2dptr m_diffuseRamp;
+		bool m_useDiffuseRamp;
+		TTN_Texture2D::st2dptr m_specularRamp;
+		bool m_useSpecularRamp;
 	};
 }

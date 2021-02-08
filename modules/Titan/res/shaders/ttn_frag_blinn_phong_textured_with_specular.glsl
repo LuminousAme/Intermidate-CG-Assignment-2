@@ -1,4 +1,4 @@
-#version 410
+#version 420
 
 //mesh data from vert shader
 layout(location = 0) in vec3 inPos;
@@ -20,6 +20,12 @@ uniform int u_hasAmbientLighting;
 uniform int u_hasSpecularLighting;
 uniform int u_hasOutline;
 uniform float u_OutlineSize;
+
+//ramps for toon shading
+layout(binding = 10)uniform sampler2D s_diffuseRamp;
+uniform int u_useDiffuseRamp;
+layout(binding = 11)uniform sampler2D s_specularRamp;
+uniform int u_useSpecularRamp;
 
 //Specfic light stuff
 uniform vec3  u_LightPos[16];
@@ -81,6 +87,7 @@ vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst
 	vec3 lightDir = normalize(pos - inPos);
 	float dif = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = dif * col * u_hasAmbientLighting * u_hasSpecularLighting;
+	diffuse = mix(diffuse, (texture(s_diffuseRamp, vec2(dif, dif)).xyz), u_useDiffuseRamp);
 
 	//attenuation
 	float dist = length(pos - inPos);
@@ -93,6 +100,7 @@ vec3 CalcLight(vec3 pos, vec3 col, float ambStr, float specStr, float attenConst
 	vec3 halfWay =  normalize(lightDir + viewDir);
 	float spec = pow(max(dot(norm, halfWay), 0.0), u_Shininess); 
 	vec3 specular = specStr * textSpec * spec * col * u_hasSpecularLighting;
+	specular = mix(specular, (texture(s_specularRamp, vec2(spec, spec)).xyz), u_useSpecularRamp);
 
 	return ((ambient + diffuse + specular) * attenuation));
 }
