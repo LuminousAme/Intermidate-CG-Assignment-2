@@ -117,6 +117,9 @@ protected:
 	float m_outlineSize = 0.2f;
 
 	std::vector<TTN_Material::smatptr> m_mats;
+	//variables for if the specular and diffuse ramps should be used
+	bool m_useDiffuseRamp = false;
+	bool m_useSpecularRamp = false;
 
 	void ImGui();
 };

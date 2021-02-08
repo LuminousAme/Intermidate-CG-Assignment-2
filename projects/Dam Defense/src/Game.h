@@ -242,6 +242,10 @@ protected:
 	bool m_ambientSpecularAndOutline;
 	//float to control outline size
 	float m_outlineSize = 0.2f;
+
+	//variables for if the specular and diffuse ramps should be used
+	bool m_useDiffuseRamp = false;
+	bool m_useSpecularRamp = false;
 };
 
 inline float SmoothStep(float t) {

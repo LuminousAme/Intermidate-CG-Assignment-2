@@ -168,10 +168,11 @@ void PrepareAssetLoading() {
 	TTN_AssetSystem::AddShaderToBeLoaded("Terrain shader", "shaders/terrain_vert.glsl", "shaders/terrain_frag.glsl", 1);
 	TTN_AssetSystem::AddShaderToBeLoaded("Water shader", "shaders/water_vert.glsl", "shaders/water_frag.glsl", 1);
 	
-	TTN_AssetSystem::AddShaderToBeLoaded("Color correct shader", "shaders/passthrough_vert.glsl", "shaders/color_correction_frag.glsl", 1);
 	TTN_AssetSystem::AddLUTTobeLoaded("Warm LUT", "Warm_LUT.cube",  1);
 	TTN_AssetSystem::AddLUTTobeLoaded("Cool LUT", "Cool_LUT.cube",  1);
 	TTN_AssetSystem::AddLUTTobeLoaded("Custom LUT", "Custom_LUT.cube",  1);
+
+	TTN_AssetSystem::AddTexture2DToBeLoaded("blue ramp", "textures/ramps/blue ramp.png");
 
 	TTN_AssetSystem::AddTexture2DToBeLoaded("Button Base", "textures/Button_1.png", 1); //button when not being hovered over
 	TTN_AssetSystem::AddTexture2DToBeLoaded("Button Hovering", "textures/Button_2.png", 1); //button when being hovered over
